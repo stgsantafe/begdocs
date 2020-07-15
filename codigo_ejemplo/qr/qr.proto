@@ -1,0 +1,88 @@
+syntax = "proto3";
+package qr;
+option go_package = ".;qr";
+
+// Cada mensaje seguro es de este tipo y tiene un encabezado y cuerpo y firma digital
+message SecureMessage {
+    // header_and_body es un array de bytes y debe contener un mensaje de tipo HeaderAndBody 
+    bytes header_and_body = 1;
+    // firma de header_and_body
+    bytes signature = 2;
+}
+
+message HeaderAndBody {
+    // Datos publicos del mensaje
+    Header header = 1;
+    // Cuerpo del mensaje
+    bytes body = 2;
+}
+
+// Tipos de firma digital soportada por ahora solo ECDSA_P256_SHA256
+enum SigScheme {
+    ECDSA_P256_SHA256 = 0;
+}
+
+// Tipos de Encriptacion Soportados
+enum EncScheme {
+    // sin encriptación
+    NONE = 0;
+}
+// Tipo de mensajes a ser disponibles a ser codificados en el cuerpo
+enum MessageKind {
+    QRActivatePuestoKind = 0;
+    QRVoucherKind = 1;
+}
+
+message Header {
+    SigScheme signature_scheme = 1;
+    EncScheme encryption_scheme = 2;
+    MessageKind message_kind = 3;
+}
+
+// QR codificado para activar un puesto
+message QRActivatePuesto {
+    // nombre de la empresa 
+    string empresa_nombre = 1;
+    // identificador de empresa
+    uint32 empresa_id = 2;
+    // identificador de puesto
+    uint32 puesto_id = 3;
+    // array de identificadores recorridos validos cargados en el sistema
+    repeated uint32 recorridos = 4;
+    // url utilizada para rendir los vouchers
+    string url_api = 5;  
+    // token de autorización que debe ser utilizado en url_api para autenticacion
+    string token = 6;
+}
+
+message QRVoucher {
+    // identificador de voucher
+    uint32 voucher_id = 1;
+    // tipo de voucher
+    uint32 tipo_voucher = 2;
+    // tipo de beneficiario
+    uint32 tipo_beneficio = 3;
+    // fecha de viaje
+    qr.Date   fecha = 4;
+    // identificador de empresa
+    uint32 empresa_id = 5;
+    // identificador de recorrido 
+    uint32 recorrido = 6;
+    // número de documento de beneficiario
+    uint32 documento = 7;
+    // apellido y nombre beneficiario
+    string nombre = 8;
+    // localidad de origen y destino
+    string desde_hasta = 9;
+}
+
+message Date {
+    // Año
+    int32 year = 1;
+     // Mes del año de 1 a 12
+    int32 month = 2;
+    // Dia del mes de 1 a 31
+    int32 day = 3;
+ }
+ 
+  
