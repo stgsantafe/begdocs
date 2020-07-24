@@ -53,6 +53,8 @@ message QRActivatePuesto {
     string url_api = 5;  
     // token de autorización que debe ser utilizado en url_api para autenticacion
     string token = 6;
+    // Clave Pública asociada a la empresa
+    string clave_publica = 7;
 }
 
 message QRVoucher {
