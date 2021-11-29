@@ -76,6 +76,10 @@ message QRVoucher {
     string nombre = 8;
     // localidad de origen y destino
     string desde_hasta = 9;
+    // identificador de localidad origen
+    uint32 localidad_id_origen = 10;
+    // identificador de localidad destino
+    uint32 localidad_id_destino = 11;
 }
 
 message Date {
